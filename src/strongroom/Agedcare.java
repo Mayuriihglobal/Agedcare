@@ -4,10 +4,13 @@ import java.time.Duration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import clickUp.createTask;
 import objects.AdjustmentimprestPage;
 import objects.DestroyPatientPage;
 import objects.DestroyimprestPage;
@@ -24,7 +27,7 @@ import objects.TransferInimprestPage;
 import objects.TransferoutPatientPage;
 import objects.TransferoutimprestPage;
 
-public class Agedcare {
+public class Agedcare extends createTask{
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private LoginPage loginPage;
@@ -79,7 +82,7 @@ public class Agedcare {
 
 	}
 
-	@Test(priority = 1, enabled = true)
+	@Test(priority = 1, enabled = false)
 	public void Adjustmentimprest() throws InterruptedException {
 
 		adjustmentimprestPage.Adjustment();
@@ -91,7 +94,7 @@ public class Agedcare {
 		// Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 15, enabled = false)
+	@Test(priority = 1, invocationCount = 3, enabled = true)
 	public void OutgoingPatient() throws InterruptedException {
 
 		outgoingPatientPage.Outgoing();
@@ -128,7 +131,7 @@ public class Agedcare {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 15, enabled = false)
+	@Test(priority = 1, invocationCount = 3, enabled = false)
 	public void Destroyimprest() throws InterruptedException {
 
 		destroyimprestPage.Destroy();
@@ -235,4 +238,23 @@ public class Agedcare {
 		// driver.close();
 
 	}
+	
+	@AfterMethod
+    public void tearDown(ITestResult result) throws java.io.IOException {
+        if (result.getStatus() == ITestResult.FAILURE) {
+            // Test case failed, extract method name and console error
+            String methodName = result.getMethod().getMethodName();
+            String consoleError = extractConsoleError(result);
+            // Create ClickUp task with method name as task name and console error in description
+            createClickUpTask(methodName, consoleError);
+        }
+    }
+    private String extractConsoleError(ITestResult result) {
+        String consoleOutput = "";
+        Throwable throwable = result.getThrowable();
+        if (throwable != null) {
+            consoleOutput = throwable.getMessage();
+        }
+        return consoleOutput;
+    }
 }
