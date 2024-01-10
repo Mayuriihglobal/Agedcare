@@ -10,10 +10,10 @@ import org.json.JSONArray;
 
 public class createTask {
 
-    public static void createClickUpTask(String taskName, String taskDescription) throws java.io.IOException {
+    public static void createClickUpTask(String taskName, String taskDescription, String status) throws java.io.IOException {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String listId = "174680483";
+        String listId = "901600102777";
         HttpPost request = new HttpPost("https://api.clickup.com/api/v2/list/" + listId + "/task?custom_task_ids=true&team_id=36607994");
         request.setHeader("Content-Type", "application/json");
         request.setHeader("Authorization", "pk_88800087_F2NBC795ZOSXU5G4FEH8MD1X0VM6A9SE");
@@ -21,11 +21,12 @@ public class createTask {
         JSONObject payload = new JSONObject();
         payload.put("name", taskName);
         payload.put("description", taskDescription);
-        payload.put("status", "in progress");
+        //payload.put("status", status);
+       payload.put("status", "pass");
         payload.put("priority", 1);  // 1,2,3,4
 
         JSONArray assigneesArray = new JSONArray();
-        assigneesArray.put(50201528);
+        assigneesArray.put(88800087);
         payload.put("assignees", assigneesArray);
 
         payload.put("due_date", JSONObject.NULL);

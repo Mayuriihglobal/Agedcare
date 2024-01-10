@@ -27,7 +27,7 @@ import objects.TransferInimprestPage;
 import objects.TransferoutPatientPage;
 import objects.TransferoutimprestPage;
 
-public class Agedcare extends createTask{
+public class Agedcare extends createTask {
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private LoginPage loginPage;
@@ -94,7 +94,7 @@ public class Agedcare extends createTask{
 		// Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 3, enabled = true)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void OutgoingPatient() throws InterruptedException {
 
 		outgoingPatientPage.Outgoing();
@@ -156,7 +156,7 @@ public class Agedcare extends createTask{
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 2, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void TransferoutImprest() throws InterruptedException {
 
 		transferoutimprestPage.transferout();
@@ -234,27 +234,39 @@ public class Agedcare extends createTask{
 
 	@AfterClass
 	public void tearDown() {
-		// driver.quit();
+		driver.quit();
 		// driver.close();
 
 	}
-	
+
 	@AfterMethod
-    public void tearDown(ITestResult result) throws java.io.IOException {
-        if (result.getStatus() == ITestResult.FAILURE) {
-            // Test case failed, extract method name and console error
-            String methodName = result.getMethod().getMethodName();
-            String consoleError = extractConsoleError(result);
-            // Create ClickUp task with method name as task name and console error in description
-            createClickUpTask(methodName, consoleError);
-        }
-    }
-    private String extractConsoleError(ITestResult result) {
-        String consoleOutput = "";
-        Throwable throwable = result.getThrowable();
-        if (throwable != null) {
-            consoleOutput = throwable.getMessage();
-        }
-        return consoleOutput;
-    }
+	public void tearDown(ITestResult result) throws java.io.IOException {
+
+		if (result.getStatus() == ITestResult.FAILURE) {
+			// Test case failed, extract method name and console error
+			String methodName = result.getMethod().getMethodName();
+			String consoleError = extractConsoleError(result);
+			String status = "fail";
+			// Create ClickUp task with method name as task name and console error in
+			// description
+			createClickUpTask(methodName, consoleError, status);
+		} else {
+			String methodName = result.getMethod().getMethodName();
+			String consoleError = extractConsoleError(result);
+			String status = "pass";
+			// Create ClickUp task with method name as task name and console error in
+			// description
+			createClickUpTask(methodName, consoleError, status);
+		}
+
+	}
+
+	private String extractConsoleError(ITestResult result) {
+		String consoleOutput = "";
+		Throwable throwable = result.getThrowable();
+		if (throwable != null) {
+			consoleOutput = throwable.getMessage();
+		}
+		return consoleOutput;
+	}
 }

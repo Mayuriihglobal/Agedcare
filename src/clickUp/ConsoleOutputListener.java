@@ -15,7 +15,7 @@ public class ConsoleOutputListener extends createTask implements ITestListener {
 
         // Create ClickUp task with method name as task name and console error in description
         try {
-            createClickUpTask(methodName, consoleError);
+            createClickUpTask(methodName, consoleError, consoleError);
         } catch (IOException e) {
             e.printStackTrace();
         }
