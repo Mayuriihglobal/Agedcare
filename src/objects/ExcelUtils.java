@@ -17,8 +17,7 @@ public class ExcelUtils {
 	static int searchCount = 1; // drug
 	static int searchCount1 = -1; // Qty
 	static int searchCoun2 = 1; // location
-	private static int searchCoun4 = 0; // TransectionID
-
+	static int searchCoun4 = 0; // TransectionID
 	static int rowIndex = 1; // external file
 
 	public static List<String> drugNames;

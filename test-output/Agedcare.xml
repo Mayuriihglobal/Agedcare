@@ -8,6 +8,8 @@
 	<test name="Aged care">
 		<classes>
 			<class name="strongroom.Agedcare"></class>
+			<class name="strongroom.Destroypatient"></class>
+
 		</classes>
 	</test>
 </suite>

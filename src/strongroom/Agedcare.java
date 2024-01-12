@@ -82,16 +82,19 @@ public class Agedcare extends createTask {
 
 	}
 
-	@Test(priority = 1, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void Adjustmentimprest() throws InterruptedException {
 
 		adjustmentimprestPage.Adjustment();
+		adjustmentimprestPage.Transectionid();
 		adjustmentimprestPage.writenote();
 		adjustmentimprestPage.imprest();
 
-		// Thread.sleep(3000);
-		// signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
-		// Thread.sleep(6000);
+		Thread.sleep(3000);
+		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature("sam", "1111");
+
+		Thread.sleep(6000);
 	}
 
 	@Test(priority = 1, invocationCount = 1, enabled = false)
@@ -106,7 +109,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 15, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void Outgoingimprest() throws InterruptedException {
 
 		outgoingimprestPage.Outgoing();
@@ -118,7 +121,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 15, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void DestroyPatient() throws InterruptedException {
 
 		destroyPatientPage.Destroy();
@@ -131,7 +134,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 3, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void Destroyimprest() throws InterruptedException {
 
 		destroyimprestPage.Destroy();
@@ -144,7 +147,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 15, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void TransferoutPatient() throws InterruptedException {
 
 		transferoutPatientPage.transferout();
@@ -156,7 +159,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, invocationCount = 1, enabled = false)
+	@Test(priority = 2, invocationCount = 1, enabled = false)
 	public void TransferoutImprest() throws InterruptedException {
 
 		transferoutimprestPage.transferout();
@@ -168,7 +171,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 2, invocationCount = 15, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void TransferinPatient() throws InterruptedException {
 
 		transferInPatientPage.transferIn();
@@ -180,7 +183,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 1, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 
 	public void stocktakeOpen() throws InterruptedException {
 		stocktakepage.clickStock();
@@ -200,7 +203,7 @@ public class Agedcare extends createTask {
 		}
 	}
 
-	@Test(priority = 2, invocationCount = 15, enabled = false)
+	@Test(priority = 2, invocationCount = 1, enabled = true)
 	public void TransferinImprest() throws InterruptedException {
 
 		transferInPage.transferIn();
@@ -212,7 +215,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 3, enabled = false)
+	@Test(priority = 3, invocationCount = 1, enabled = false)
 
 	public void stocktakeclose() throws InterruptedException {
 		stocktakepages.clickStock();
@@ -235,7 +238,6 @@ public class Agedcare extends createTask {
 	@AfterClass
 	public void tearDown() {
 		driver.quit();
-		// driver.close();
 
 	}
 

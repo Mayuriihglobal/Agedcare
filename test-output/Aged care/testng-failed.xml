@@ -10,8 +10,8 @@
         <methods>
           <include name="tearDown"/>
           <include name="tearDown"/>
-          <include name="OutgoingPatient"/>
           <include name="setUp"/>
+          <include name="Adjustmentimprest"/>
         </methods>
       </class> <!-- strongroom.Agedcare -->
     </classes>
