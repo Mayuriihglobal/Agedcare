@@ -91,8 +91,8 @@ public class Agedcare extends createTask {
 		adjustmentimprestPage.imprest();
 
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
-		signPage.performSignature("sam", "1111");
+		signPage.performSignature();
+		// signPage.performSignature("sam", "1111");
 
 		Thread.sleep(6000);
 	}
@@ -105,7 +105,7 @@ public class Agedcare extends createTask {
 		outgoingPatientPage.Resident();
 
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -117,7 +117,7 @@ public class Agedcare extends createTask {
 		outgoingimprestPage.imprest();
 
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -130,7 +130,7 @@ public class Agedcare extends createTask {
 		destroyPatientPage.CourierNameandNotes();
 		destroyPatientPage.Resident();
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -143,7 +143,7 @@ public class Agedcare extends createTask {
 		destroyimprestPage.CourierNameandNotes();
 		destroyimprestPage.imprest();
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -155,7 +155,7 @@ public class Agedcare extends createTask {
 		transferoutPatientPage.writenote();
 		transferoutPatientPage.Resident();
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -167,7 +167,7 @@ public class Agedcare extends createTask {
 		transferoutimprestPage.writenote();
 		transferoutimprestPage.imprest();
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -179,7 +179,7 @@ public class Agedcare extends createTask {
 		transferInPatientPage.writenote();
 		transferInPatientPage.Resident();
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
@@ -203,7 +203,7 @@ public class Agedcare extends createTask {
 		}
 	}
 
-	@Test(priority = 1, invocationCount = 1, enabled = false)
+	@Test(priority = 1, invocationCount = 1, enabled = true)
 	public void TransferinImprest() throws InterruptedException {
 
 		transferInPage.transferIn();
@@ -211,7 +211,7 @@ public class Agedcare extends createTask {
 		transferInPage.writenote();
 		transferInPage.imprest();
 		Thread.sleep(3000);
-		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
+		signPage.performSignature();
 		Thread.sleep(6000);
 	}
 
