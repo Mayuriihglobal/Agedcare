@@ -29,8 +29,9 @@ public class SignPage {
 
 	public static void data() {
 
-		usernames = readusernameFromExcel("Agedcare.xlsx");
-		pins = readpinFromExcel("Agedcare.xlsx");
+		usernames = readValuesFromExcel("Agedcare.xlsx", "Signature", 1); // Assuming usernames are in the second column
+																			// (index 1)
+		pins = readValuesFromExcel("Agedcare.xlsx", "Signature", 2); // Assuming pins are in the third column (index 2)
 
 	}
 
@@ -82,7 +83,7 @@ public class SignPage {
 		List<String> values = new ArrayList<>();
 
 		try (Workbook workbook = WorkbookFactory.create(new File(filePath))) {
-			Sheet sheet = workbook.getSheet("Signature");
+			Sheet sheet = workbook.getSheet(sheetName);
 			int rowIndex = 0;
 
 			for (Row row : sheet) {
@@ -106,17 +107,6 @@ public class SignPage {
 		}
 
 		return values;
-	}
-
-	// Usage of single method
-	public static List<String> readusernameFromExcel(String filePath) {
-		int usernameCellIndex = 1; // Assuming User names are in the first column (index 1)
-		return readValuesFromExcel(filePath, filePath, usernameCellIndex);
-	}
-
-	public static List<String> readpinFromExcel(String filePath) {
-		int pinCellIndex = 2; // Assuming pin are in the second column (index 2)
-		return readValuesFromExcel(filePath, filePath, pinCellIndex);
 	}
 
 }
