@@ -26,8 +26,8 @@ public class AdjustmentimprestPage extends ExcelUtils {
 	private WebDriverWait wait;
 	private WebDriver driver;
 
-	List<String> drugNames = readDrugNamesFromExcel("output.xlsx");
-	List<String> transectionids = readTransectionIDFromExcel("output.xlsx");
+	List<String> drugNames = readDrugNamesFromExcel("Agedcare.xlsx");
+	List<String> transectionids = readTransectionIDFromExcel("Agedcare.xlsx");
 
 	private static int searchCount = -1; // drug
 	private static int searchCoun4 = 0; // TransectionID

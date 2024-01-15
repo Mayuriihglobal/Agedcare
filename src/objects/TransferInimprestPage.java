@@ -27,9 +27,9 @@ public class TransferInimprestPage extends ExcelUtils {
 	private WebDriverWait wait;
 	private WebDriver driver;
 
-	List<String> drugNames = readDrugNamesFromExcel("output.xlsx");
-	List<String> innumbers = readInnumbersFromExcel("output.xlsx");
-	List<String> location = readLocationFromExcel("output.xlsx");
+	List<String> drugNames = readDrugNamesFromExcel("Agedcare.xlsx");
+	List<String> innumbers = readInnumbersFromExcel("Agedcare.xlsx");
+	List<String> location = readLocationFromExcel("Agedcare.xlsx");
 
 	private static int searchCount = -1; // drug
 	private static int searchCount1 = -1; // quantity

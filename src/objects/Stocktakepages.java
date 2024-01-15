@@ -23,7 +23,7 @@ public class Stocktakepages extends ExcelUtils {
 	public Stocktakepages(WebDriver driver, WebDriverWait wait) {
 
 		this.wait = wait;
-		ExcelUtils.drugNames = readDrugNamesFromExcel("output.xlsx");
+		ExcelUtils.drugNames = readDrugNamesFromExcel("Agedcare.xlsx");
 
 	}
 
@@ -59,7 +59,7 @@ public class Stocktakepages extends ExcelUtils {
 
 	public void enterMedication(int drugIndex) {
 		// Read drug names from the Excel file
-		List<String> drugNames = readDrugNamesFromExcel("output.xlsx");
+		List<String> drugNames = readDrugNamesFromExcel("Agedcare.xlsx");
 
 		// Get the drug name based on the provided index
 		String drugName = drugNames.get(drugIndex % drugNames.size());
@@ -87,7 +87,7 @@ public class Stocktakepages extends ExcelUtils {
 			int valueToCompare = Integer.parseInt(numericPart);
 			System.out.println("(Stock): " + valueToCompare);
 
-			OpeningBalance("/home/user/Documents/myExcelFile.xlsx", "Table Data", 10, String.valueOf(valueToCompare));
+			OpeningBalance("/home/user/Documents/Agedcare.xlsx", "Table Data", 10, String.valueOf(valueToCompare));
 			return valueToCompare;
 
 			// Parse the numeric part into an integer

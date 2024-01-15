@@ -5,10 +5,11 @@
     <classes>
       <class name="strongroom.Agedcare">
         <methods>
-          <include name="TransferinImprest"/>
           <include name="tearDown"/>
           <include name="tearDown"/>
+          <include name="Login"/>
           <include name="setUp"/>
+          <include name="Adjustmentimprest"/>
         </methods>
       </class> <!-- strongroom.Agedcare -->
     </classes>

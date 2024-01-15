@@ -1,34 +1,58 @@
 package strongroom;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.testng.annotations.DataProvider;
+import java.time.Duration;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import objects.DestroyPatientPage;
+import objects.DestroyPatientPagetest;
+import objects.LoginPage;
+import objects.NotificationPage;
+import objects.SecondPage;
 import objects.SignPage;
-import test.Util.TestUtil;
+
 
 public class Destroypatient {
 	
-	private DestroyPatientPage destroyPatientPage;
+	private DestroyPatientPagetest destroyPatientPagetest;
 	private SignPage signPage;
+	private LoginPage loginPage;
+	private SecondPage secondPage;
+	private NotificationPage notificationPage;
+	private WebDriverWait wait;
+	private WebDriver driver;
 	
-	@DataProvider
-	public Iterator<Object[]> getTestData() {
-		ArrayList<Object[]> testData =TestUtil.getDatafordestorypatient();
-		return testData.iterator();
+	@BeforeMethod
+	public void setUp() {
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		loginPage = new LoginPage(driver, wait);
+		secondPage = new SecondPage(driver, wait);
+		notificationPage = new NotificationPage(driver, wait);
+		signPage = new SignPage(driver, wait);
+		destroyPatientPagetest = new DestroyPatientPagetest(driver, wait);
+		
+		loginPage.openLoginPage("https://staging.strongroom.ai/login");
+		LoginPage.login();
+		loginPage.clickLoginButton();
+
+		secondPage.selectLocationFromDropdown();
+		secondPage.clickSecondPageButton();
+		notificationPage.clickNotificationIcon();
+
 	}
 	
-	@Test(priority = 1, invocationCount = 15, enabled = false, dataProvider= "getTestData")
+	@Test
 	public void DestroyPatient() throws InterruptedException {
 
-		destroyPatientPage.Destroy();
-		destroyPatientPage.writenote();
-		destroyPatientPage.MethodOFDestruction();
-		destroyPatientPage.CourierNameandNotes();
-		destroyPatientPage.Resident();
+		destroyPatientPagetest.Destroy();
+		destroyPatientPagetest.writenote();
+		destroyPatientPagetest.MethodOFDestruction();
+		destroyPatientPagetest.CourierNameandNotes();
+		DestroyPatientPagetest.Resident(null);
 		Thread.sleep(3000);
 		signPage.performSignature("valeshan.naidoo@strongroom.ai", "1111");
 		Thread.sleep(6000);

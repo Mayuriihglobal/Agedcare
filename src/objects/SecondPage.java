@@ -36,7 +36,7 @@ public class SecondPage {
 
 	public static void data() {
 
-		selectlocations = SelectlocationFromExcell("output.xlsx");
+		selectlocations = SelectlocationFromExcell("Agedcare.xlsx");
 
 	}
 
@@ -78,7 +78,7 @@ public class SecondPage {
 		List<String> values = new ArrayList<>();
 
 		try (Workbook workbook = WorkbookFactory.create(new File(filePath))) {
-			Sheet sheet = workbook.getSheet("Login");
+			Sheet sheet = workbook.getSheet("Configuration");
 			int rowIndex = 0;
 
 			for (Row row : sheet) {

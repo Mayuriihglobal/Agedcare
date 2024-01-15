@@ -35,10 +35,10 @@ public class LoginPage {
 
 	public static void data() {
 
-		locations = readLocationFromExcel("output.xlsx");
-		usernames = UsernameFromExcel("output.xlsx");
-		passwords = PasswordFromExcel("output.xlsx");
-		selectlocations = SelectlocationFromExcell("output.xlsx");
+		locations = readLocationFromExcel("Agedcare.xlsx");
+		usernames = UsernameFromExcel("Agedcare.xlsx");
+		passwords = PasswordFromExcel("Agedcare.xlsx");
+		selectlocations = SelectlocationFromExcell("Agedcare.xlsx");
 
 	}
 
@@ -92,7 +92,7 @@ public class LoginPage {
 		List<String> values = new ArrayList<>();
 
 		try (Workbook workbook = WorkbookFactory.create(new File(filePath))) {
-			Sheet sheet = workbook.getSheet("Login");
+			Sheet sheet = workbook.getSheet("Configuration");
 			int rowIndex = 0;
 
 			for (Row row : sheet) {

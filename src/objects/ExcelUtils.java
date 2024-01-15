@@ -28,11 +28,11 @@ public class ExcelUtils {
 
 	public static void data() {
 
-		drugNames = readDrugNamesFromExcel("output.xlsx");
-		Innumbers = readInnumbersFromExcel("output.xlsx");
-		location = readLocationFromExcel("output.xlsx");
-		resident = readResidentFromExcel("output.xlsx");
-		transectionid = readTransectionIDFromExcel("output.xlsx");
+		drugNames = readDrugNamesFromExcel("Agedcare.xlsx");
+		Innumbers = readInnumbersFromExcel("Agedcare.xlsx");
+		location = readLocationFromExcel("Agedcare.xlsx");
+		resident = readResidentFromExcel("Agedcare.xlsx");
+		transectionid = readTransectionIDFromExcel("Agedcare.xlsx");
 
 	}
 
