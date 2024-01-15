@@ -32,6 +32,7 @@ public class LoginPage {
 	public static List<String> usernames;
 	public static List<String> passwords;
 	public static List<String> selectlocations;
+	public static List<String> loginUrls;
 
 	public static void data() {
 
@@ -39,6 +40,7 @@ public class LoginPage {
 		usernames = UsernameFromExcel("Agedcare.xlsx");
 		passwords = PasswordFromExcel("Agedcare.xlsx");
 		selectlocations = SelectlocationFromExcell("Agedcare.xlsx");
+		loginUrls = readLoginUrlFromExcel("Agedcare.xlsx");
 
 	}
 
@@ -48,8 +50,10 @@ public class LoginPage {
 
 	}
 
-	public void openLoginPage(String url) {
-		driver.get(url);
+	public void openLoginPage() {
+		data();
+		String loginUrl = loginUrls.get(0);
+		driver.get(loginUrl);
 	}
 
 	public static void login() {
@@ -115,24 +119,28 @@ public class LoginPage {
 	}
 
 	// Usage of single method
+	public static List<String> readLoginUrlFromExcel(String filePath) {
+		int loginUrlCellIndex = 0; // Assuming URL names are in the first column (index 0)
+		return readValuesFromExcel(filePath, filePath, loginUrlCellIndex);
+	}
+
 	public static List<String> readLocationFromExcel(String filePath) {
-		int locationCellIndex = 1; // Assuming drug names are in the third column (index 2)
+		int locationCellIndex = 1; // Assuming Location names are in the second column (index 1)
 		return readValuesFromExcel(filePath, filePath, locationCellIndex);
 	}
 
 	public static List<String> UsernameFromExcel(String filePath) {
-		int UsernameCellIndex = 2; // Assuming innumbers are in the eighth column (index 7)
+		int UsernameCellIndex = 2; // Assuming username are in the third column (index 2)
 		return readValuesFromExcel(filePath, filePath, UsernameCellIndex);
 	}
 
 	public static List<String> PasswordFromExcel(String filePath) {
-		int locationCellIndex = 3; // Assuming locations are in the fifth column (index 4)
-		return readValuesFromExcel(filePath, filePath, locationCellIndex);
+		int passwordCellIndex = 3; // Assuming password are in the fourth column (index 3)
+		return readValuesFromExcel(filePath, filePath, passwordCellIndex);
 	}
 
-	// Usage of single method
 	public static List<String> SelectlocationFromExcell(String filePath) {
-		int SelectlocationCellIndex = 4; // Assuming drug names are in the third column (index 2)
+		int SelectlocationCellIndex = 4; // Assuming selectlocation names are in the fifth column (index 4)
 		return readValuesFromExcel(filePath, filePath, SelectlocationCellIndex);
 	}
 

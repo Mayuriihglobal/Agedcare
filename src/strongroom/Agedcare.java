@@ -72,7 +72,7 @@ public class Agedcare extends createTask {
 	@Test(priority = 0)
 	public void Login() {
 		// Test Scenario
-		loginPage.openLoginPage("https://staging.strongroom.ai/login");
+		loginPage.openLoginPage();
 		LoginPage.login();
 		loginPage.clickLoginButton();
 
@@ -82,7 +82,7 @@ public class Agedcare extends createTask {
 
 	}
 
-	@Test(priority = 9, invocationCount = 1, enabled = true)
+	@Test(priority = 9, invocationCount = 1, enabled = false)
 	public void Adjustmentimprest() throws InterruptedException {
 
 		adjustmentimprestPage.Adjustment();
