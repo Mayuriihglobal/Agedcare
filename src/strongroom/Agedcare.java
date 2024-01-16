@@ -203,7 +203,7 @@ public class Agedcare extends createTask {
 		}
 	}
 
-	@Test(priority = 1, invocationCount = 1, enabled = true)
+	@Test(priority = 1, invocationCount = 1, enabled = false)
 	public void TransferinImprest() throws InterruptedException {
 
 		transferInPage.transferIn();
@@ -215,7 +215,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 11, invocationCount = 1, enabled = false)
+	@Test(priority = 11, invocationCount = 1, enabled = true)
 
 	public void stocktakeclose() throws InterruptedException {
 		stocktakepages.clickStock();
