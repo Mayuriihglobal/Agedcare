@@ -1,16 +1,21 @@
 package strongroom;
 
+import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import clickUp.createTask;
+import clickUP.createTask;
 import objects.AdjustmentimprestPage;
 import objects.DestroyPatientPage;
 import objects.DestroyimprestPage;
@@ -27,7 +32,7 @@ import objects.TransferInimprestPage;
 import objects.TransferoutPatientPage;
 import objects.TransferoutimprestPage;
 
-public class Agedcare extends createTask {
+public class Agedcare extends createTask implements ITestListener {
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private LoginPage loginPage;
@@ -82,7 +87,7 @@ public class Agedcare extends createTask {
 
 	}
 
-	@Test(priority = 9, invocationCount = 1, enabled = false)
+	@Test(priority = 9, invocationCount = 3, enabled = true)
 	public void Adjustmentimprest() throws InterruptedException {
 
 		adjustmentimprestPage.Adjustment();
@@ -97,7 +102,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 8, invocationCount = 1, enabled = false)
+	@Test(priority = 8, invocationCount = 2, enabled = true)
 	public void OutgoingPatient() throws InterruptedException {
 
 		outgoingPatientPage.Outgoing();
@@ -109,7 +114,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 7, invocationCount = 1, enabled = false)
+	@Test(priority = 7, invocationCount = 4, enabled = true)
 	public void Outgoingimprest() throws InterruptedException {
 
 		outgoingimprestPage.Outgoing();
@@ -121,7 +126,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 6, invocationCount = 1, enabled = false)
+	@Test(priority = 6, invocationCount = 2, enabled = true)
 	public void DestroyPatient() throws InterruptedException {
 
 		destroyPatientPage.Destroy();
@@ -134,7 +139,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 5, invocationCount = 1, enabled = false)
+	@Test(priority = 5, invocationCount = 3, enabled = true)
 	public void Destroyimprest() throws InterruptedException {
 
 		destroyimprestPage.Destroy();
@@ -147,7 +152,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 4, invocationCount = 1, enabled = false)
+	@Test(priority = 4, invocationCount = 3, enabled = true)
 	public void TransferoutPatient() throws InterruptedException {
 
 		transferoutPatientPage.transferout();
@@ -159,7 +164,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 3, invocationCount = 1, enabled = false)
+	@Test(priority = 3, invocationCount = 3, enabled = true)
 	public void TransferoutImprest() throws InterruptedException {
 
 		transferoutimprestPage.transferout();
@@ -171,7 +176,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 2, invocationCount = 1, enabled = false)
+	@Test(priority = 2, invocationCount = 3, enabled = true)
 	public void TransferinPatient() throws InterruptedException {
 
 		transferInPatientPage.transferIn();
@@ -183,7 +188,7 @@ public class Agedcare extends createTask {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 10, invocationCount = 1, enabled = false)
+	@Test(priority = 10, invocationCount = 1, enabled = true)
 
 	public void stocktakeOpen() throws InterruptedException {
 		stocktakepage.clickStock();
@@ -203,7 +208,7 @@ public class Agedcare extends createTask {
 		}
 	}
 
-	@Test(priority = 1, invocationCount = 1, enabled = false)
+	@Test(priority = 1, invocationCount = 3, enabled = true)
 	public void TransferinImprest() throws InterruptedException {
 
 		transferInPage.transferIn();
@@ -242,25 +247,44 @@ public class Agedcare extends createTask {
 	}
 
 	@AfterMethod
-	public void tearDown(ITestResult result) throws java.io.IOException {
-
+	public void tearDown(ITestResult result) throws IOException {
+		String formattedDateTime = getCurrentDateTime();
 		if (result.getStatus() == ITestResult.FAILURE) {
-			// Test case failed, extract method name and console error
+			String taskDescription = "This added by automation script";
+			String listId = "901600130678";
+			String status = "FAIL";
+
+			createClickUpTask(formattedDateTime, taskDescription, listId, status);
+
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
-			String status = "fail";
-			// Create ClickUp task with method name as task name and console error in
-			// description
-			createClickUpTask(methodName, consoleError, status);
+			createClickUpTask(methodName, consoleError, listId, status);
+
+			String mainTaskId = getTaskId(formattedDateTime, listId);
+			String subTaskId = getTaskId(methodName, listId);
+			updateTask(subTaskId, mainTaskId);
 		} else {
+			String taskDescription = "This added by automation script";
+			String listId = "901600535467";
+			String status = "PASS";
+
+			createClickUpTask(formattedDateTime, taskDescription, listId, status);
+
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
-			String status = "pass";
-			// Create ClickUp task with method name as task name and console error in
-			// description
-			createClickUpTask(methodName, consoleError, status);
+			createClickUpTask(methodName, consoleError, listId, status);
+
+			String mainTaskId = getTaskId(formattedDateTime, listId);
+			String subTaskId = getTaskId(methodName, listId);
+			updateTask(subTaskId, mainTaskId);
 		}
 
+	}
+
+	private String getCurrentDateTime() {
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy H:m");
+		return now.format(formatter);
 	}
 
 	private String extractConsoleError(ITestResult result) {
@@ -271,4 +295,5 @@ public class Agedcare extends createTask {
 		}
 		return consoleOutput;
 	}
+
 }
