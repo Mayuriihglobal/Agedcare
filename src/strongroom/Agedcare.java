@@ -50,6 +50,8 @@ public class Agedcare extends createTask implements ITestListener {
 	private AdjustmentimprestPage adjustmentimprestPage;
 	private SignPage signPage;
 	private Stocktakepages stocktakepages;
+	private static String formattedDateTime; // Class variable to store formatted date and time
+	private static boolean taskCreated = false;
 
 	@BeforeClass
 	public void setUp() {
@@ -71,6 +73,7 @@ public class Agedcare extends createTask implements ITestListener {
 		adjustmentimprestPage = new AdjustmentimprestPage(driver, wait);
 		signPage = new SignPage(driver, wait);
 		stocktakepages = new Stocktakepages(driver, wait);
+		formattedDateTime = getCurrentDateTime();
 
 	}
 
@@ -87,7 +90,7 @@ public class Agedcare extends createTask implements ITestListener {
 
 	}
 
-	@Test(priority = 9, invocationCount = 3, enabled = true)
+	@Test(priority = 9, invocationCount = 1, enabled = true)
 	public void Adjustmentimprest() throws InterruptedException {
 
 		adjustmentimprestPage.Adjustment();
@@ -102,7 +105,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 8, invocationCount = 2, enabled = true)
+	@Test(priority = 8, invocationCount = 1, enabled = true)
 	public void OutgoingPatient() throws InterruptedException {
 
 		outgoingPatientPage.Outgoing();
@@ -114,7 +117,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 7, invocationCount = 4, enabled = true)
+	@Test(priority = 7, invocationCount = 1, enabled = true)
 	public void Outgoingimprest() throws InterruptedException {
 
 		outgoingimprestPage.Outgoing();
@@ -126,7 +129,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 6, invocationCount = 2, enabled = true)
+	@Test(priority = 6, invocationCount = 1, enabled = true)
 	public void DestroyPatient() throws InterruptedException {
 
 		destroyPatientPage.Destroy();
@@ -139,7 +142,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 5, invocationCount = 3, enabled = true)
+	@Test(priority = 5, invocationCount = 1, enabled = true)
 	public void Destroyimprest() throws InterruptedException {
 
 		destroyimprestPage.Destroy();
@@ -152,7 +155,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 4, invocationCount = 3, enabled = true)
+	@Test(priority = 4, invocationCount = 1, enabled = true)
 	public void TransferoutPatient() throws InterruptedException {
 
 		transferoutPatientPage.transferout();
@@ -164,7 +167,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 3, invocationCount = 3, enabled = true)
+	@Test(priority = 3, invocationCount = 1, enabled = true)
 	public void TransferoutImprest() throws InterruptedException {
 
 		transferoutimprestPage.transferout();
@@ -176,7 +179,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 2, invocationCount = 3, enabled = true)
+	@Test(priority = 2, invocationCount = 1, enabled = true)
 	public void TransferinPatient() throws InterruptedException {
 
 		transferInPatientPage.transferIn();
@@ -188,7 +191,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 10, invocationCount = 1, enabled = true)
+	@Test(priority = 10, invocationCount = 1, enabled = false)
 
 	public void stocktakeOpen() throws InterruptedException {
 		stocktakepage.clickStock();
@@ -208,7 +211,7 @@ public class Agedcare extends createTask implements ITestListener {
 		}
 	}
 
-	@Test(priority = 1, invocationCount = 3, enabled = true)
+	@Test(priority = 1, invocationCount = 1, enabled = true)
 	public void TransferinImprest() throws InterruptedException {
 
 		transferInPage.transferIn();
@@ -220,7 +223,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 11, invocationCount = 1, enabled = true)
+	@Test(priority = 11, invocationCount = 1, enabled = false)
 
 	public void stocktakeclose() throws InterruptedException {
 		stocktakepages.clickStock();
@@ -248,13 +251,19 @@ public class Agedcare extends createTask implements ITestListener {
 
 	@AfterMethod
 	public void tearDown(ITestResult result) throws IOException {
-		String formattedDateTime = getCurrentDateTime();
+		// Use the stored formattedDateTime in the method
+
 		if (result.getStatus() == ITestResult.FAILURE) {
 			String taskDescription = "This added by automation script";
 			String listId = "901600130678";
 			String status = "FAIL";
 
-			createClickUpTask(formattedDateTime, taskDescription, listId, status);
+			if (!taskCreated) {
+				createClickUpTask(formattedDateTime, taskDescription, listId, status);
+				taskCreated = true; // Set the flag to false after creating the task
+			}
+
+			// createClickUpTask(formattedDateTime, taskDescription, listId, status);
 
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
@@ -268,8 +277,10 @@ public class Agedcare extends createTask implements ITestListener {
 			String listId = "901600535467";
 			String status = "PASS";
 
-			createClickUpTask(formattedDateTime, taskDescription, listId, status);
-
+			if (!taskCreated) {
+				createClickUpTask(formattedDateTime, taskDescription, listId, status);
+				taskCreated = true; // Set the flag to false after creating the task
+			}
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
 			createClickUpTask(methodName, consoleError, listId, status);

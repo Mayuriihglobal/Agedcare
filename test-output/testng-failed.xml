@@ -5,15 +5,12 @@
     <classes>
       <class name="strongroom.Agedcare">
         <methods>
-          <include name="DestroyPatient"/>
           <include name="tearDown"/>
           <include name="tearDown"/>
           <include name="OutgoingPatient"/>
           <include name="setUp"/>
           <include name="Adjustmentimprest"/>
           <include name="Outgoingimprest"/>
-          <include name="stocktakeOpen"/>
-          <include name="stocktakeclose"/>
         </methods>
       </class> <!-- strongroom.Agedcare -->
     </classes>

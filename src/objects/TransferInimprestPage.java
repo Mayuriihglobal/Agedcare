@@ -22,7 +22,8 @@ public class TransferInimprestPage extends ExcelUtils {
 	private static final By QTY_LOCATOR = By.xpath("//input[@placeholder='Enter qty']");
 	private static final By ADD_LOCATOR = By.xpath("//p[@class='submit-button blue-button']");
 	private static final By COMPLATE_LOCATOR = By.xpath("//p[@class='regular-button complete-button']");
-	//private static final By ADDED_QTY_LOCATOR = By.xpath("//div[@class='right-form-section-drug-container']//span[1]");
+	// private static final By ADDED_QTY_LOCATOR =
+	// By.xpath("//div[@class='right-form-section-drug-container']//span[1]");
 
 	private WebDriverWait wait;
 	private WebDriver driver;
@@ -52,6 +53,8 @@ public class TransferInimprestPage extends ExcelUtils {
 		// Wait for the modal to be invisible before proceeding
 	}
 
+	private String enteredLocation; // Class variable to store the entered location
+
 	public void enterLocation() throws InterruptedException {
 
 		WebElement enterLocation = wait.until(ExpectedConditions.elementToBeClickable(LOCATION_BUTTON_LOCATOR));
@@ -59,6 +62,8 @@ public class TransferInimprestPage extends ExcelUtils {
 
 		// searchCoun2++;
 		int locationIndex = searchCoun2 % location.size();
+		enteredLocation = location.get(locationIndex); // Store the entered location
+		enterLocation.sendKeys(enteredLocation);
 
 		enterLocation.sendKeys(location.get(locationIndex));
 
@@ -170,4 +175,8 @@ public class TransferInimprestPage extends ExcelUtils {
 
 	}
 
+	// Getter method to retrieve the entered location
+	public String getEnteredLocation() {
+		return enteredLocation;
+	}
 }

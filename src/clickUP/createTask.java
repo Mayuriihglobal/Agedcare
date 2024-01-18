@@ -18,13 +18,13 @@ public class createTask {
 			throws IOException {
 		HttpClient httpClient = HttpClientBuilder.create().build();
 
-		// Check if the task with the same name already exists
-		String existingTaskId = getTaskId(taskName, listId);
-		if (!existingTaskId.equals("TaskNotFound")) {
-			System.out.println("Task with the same name already exists. Skipping task creation.");
-			return;
-		}
-
+		/*
+		 * // Check if the task with the same name already exists String existingTaskId
+		 * = getTaskId(taskName, listId); if (!existingTaskId.equals("TaskNotFound")) {
+		 * System.out.
+		 * println("Task with the same name already exists. Skipping task creation.");
+		 * return; }
+		 */
 		HttpPost request = new HttpPost("https://api.clickup.com/api/v2/list/" + listId + "/task?custom_task_ids=true");
 		request.setHeader("Content-Type", "application/json");
 		request.setHeader("Authorization", "pk_88800087_F2NBC795ZOSXU5G4FEH8MD1X0VM6A9SE");
