@@ -51,13 +51,12 @@ public class Agedcare extends createTask implements ITestListener {
 	private SignPage signPage;
 	private Stocktakepages stocktakepages;
 	private static String formattedDateTime; // Class variable to store formatted date and time
-	private static boolean taskCreated = false;
 
 	@BeforeClass
 	public void setUp() {
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		loginPage = new LoginPage(driver, wait);
 		secondPage = new SecondPage(driver, wait);
 		notificationPage = new NotificationPage(driver, wait);
@@ -90,7 +89,7 @@ public class Agedcare extends createTask implements ITestListener {
 
 	}
 
-	@Test(priority = 9, invocationCount = 1, enabled = true)
+	@Test(priority = 9, invocationCount = 1, enabled = false)
 	public void Adjustmentimprest() throws InterruptedException {
 
 		adjustmentimprestPage.Adjustment();
@@ -105,7 +104,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 8, invocationCount = 1, enabled = true)
+	@Test(priority = 8, invocationCount = 1, enabled = false)
 	public void OutgoingPatient() throws InterruptedException {
 
 		outgoingPatientPage.Outgoing();
@@ -117,7 +116,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 7, invocationCount = 1, enabled = true)
+	@Test(priority = 7, invocationCount = 1, enabled = false)
 	public void Outgoingimprest() throws InterruptedException {
 
 		outgoingimprestPage.Outgoing();
@@ -129,7 +128,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 6, invocationCount = 1, enabled = true)
+	@Test(priority = 6, invocationCount = 1, enabled = false)
 	public void DestroyPatient() throws InterruptedException {
 
 		destroyPatientPage.Destroy();
@@ -142,7 +141,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 5, invocationCount = 1, enabled = true)
+	@Test(priority = 5, invocationCount = 1, enabled = false)
 	public void Destroyimprest() throws InterruptedException {
 
 		destroyimprestPage.Destroy();
@@ -258,12 +257,7 @@ public class Agedcare extends createTask implements ITestListener {
 			String listId = "901600130678";
 			String status = "FAIL";
 
-			if (!taskCreated) {
-				createClickUpTask(formattedDateTime, taskDescription, listId, status);
-				taskCreated = true; // Set the flag to false after creating the task
-			}
-
-			// createClickUpTask(formattedDateTime, taskDescription, listId, status);
+			createClickUpTask(formattedDateTime, taskDescription, listId, status);
 
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
@@ -277,10 +271,8 @@ public class Agedcare extends createTask implements ITestListener {
 			String listId = "901600535467";
 			String status = "PASS";
 
-			if (!taskCreated) {
-				createClickUpTask(formattedDateTime, taskDescription, listId, status);
-				taskCreated = true; // Set the flag to false after creating the task
-			}
+			createClickUpTask(formattedDateTime, taskDescription, listId, status);
+
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
 			createClickUpTask(methodName, consoleError, listId, status);

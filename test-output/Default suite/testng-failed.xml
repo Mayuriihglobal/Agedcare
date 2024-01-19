@@ -5,8 +5,15 @@
     <classes>
       <class name="strongroom.Agedcare">
         <methods>
+          <include name="DestroyPatient"/>
           <include name="tearDown"/>
           <include name="tearDown"/>
+          <include name="Login"/>
+          <include name="Destroyimprest"/>
+          <include name="TransferinPatient"/>
+          <include name="TransferinImprest"/>
+          <include name="TransferoutImprest"/>
+          <include name="TransferoutPatient"/>
           <include name="OutgoingPatient"/>
           <include name="setUp"/>
           <include name="Adjustmentimprest"/>
