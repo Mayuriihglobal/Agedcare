@@ -36,6 +36,13 @@ public class TransferInimprestPage extends ExcelUtils {
 
 	public Stocktakepage stocktakepage;
 
+	private String enteredLocation; // Class variable to store the entered location
+	private String enteredDrug; // Class variable to store the entered drug
+	private String enteredQuantity; // Class variable to store the entered quantity
+	private String transferInPageURL; // Class variable to store the Transfer In Page URL
+	private String selectedLocation; // Class variable to store the selected location
+	private String note; // Class variable to store the note
+
 	public TransferInimprestPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
@@ -50,8 +57,6 @@ public class TransferInimprestPage extends ExcelUtils {
 
 		// Wait for the modal to be invisible before proceeding
 	}
-
-	private String enteredLocation; // Class variable to store the entered location
 
 	public void enterLocation() throws InterruptedException {
 
@@ -95,6 +100,8 @@ public class TransferInimprestPage extends ExcelUtils {
 		WebElement writenote = wait.until(ExpectedConditions.elementToBeClickable(NOTE_LOCATOR));
 		writenote.click();
 		writenote.sendKeys("Transferr in imprest");
+		note = "Transfer in imprest";
+
 	}
 
 	public void imprest() throws InterruptedException {
@@ -138,6 +145,8 @@ public class TransferInimprestPage extends ExcelUtils {
 		String drugqty = innumbers.get(searchCount1 % innumbers.size());
 
 		quantityInput.sendKeys(drugqty);
+		enteredDrug = drugname1; // Store the entered drug
+		enteredQuantity = drugqty; // Store the entered quantity
 
 		WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(ADD_LOCATOR));
 		addButton.click();
@@ -149,8 +158,31 @@ public class TransferInimprestPage extends ExcelUtils {
 
 	}
 
-	// Getter method to retrieve the entered location
 	public String getEnteredLocation() {
 		return enteredLocation;
 	}
+
+	public String getEnteredDrug() {
+		return enteredDrug;
+	}
+
+	public String getEnteredQuantity() {
+		return enteredQuantity;
+	}
+
+	public String getTransferInPageURL() {
+		transferInPageURL = driver.getCurrentUrl();
+		return transferInPageURL;
+	}
+
+	public String getSelectedLocation() {
+		WebElement selectedLocationElement = driver.findElement(LOCATION_BUTTON_LOCATOR);
+		selectedLocation = selectedLocationElement.getText().trim();
+		return selectedLocation;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
 }

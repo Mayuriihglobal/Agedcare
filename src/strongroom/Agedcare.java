@@ -52,6 +52,7 @@ public class Agedcare extends createTask implements ITestListener {
 	private Stocktakepages stocktakepages;
 	private static String formattedDateTime; // Class variable to store formatted date and time
 	private static String loginTaskDescription;
+	private static String transferinTaskDescription;
 
 	@BeforeClass
 	public void setUp() {
@@ -232,6 +233,24 @@ public class Agedcare extends createTask implements ITestListener {
 		signPage.performSignature();
 		Thread.sleep(6000);
 
+		// Additional information for ClickUp task description
+		String transferInPageURL = driver.getCurrentUrl();
+		String selectedLocation = transferInPage.getSelectedLocation(); // Assuming you have a method to get selected
+																		// location
+		String enteredLocation = transferInPage.getEnteredLocation(); // Assuming you have a method to get entered
+																		// location
+		String note = transferInPage.getNote(); // Assuming you have a method to get the note
+
+		// Creating ClickUp task description for Transferin
+		transferinTaskDescription = "Transferin Page URL: " + transferInPageURL + "\n" + "Selected Location: "
+				+ selectedLocation + "\n" + "Entered Location: " + enteredLocation + "\n" + "Note: " + note;
+
+		// Use the transferinTaskDescription as needed in your further logic
+		// For example, you can pass it to createClickUpTask method
+
+		// createClickUpTask(formattedDateTime, transferinTaskDescription, listId,
+		// status, additionalInfo);
+
 	}
 
 	@Test(priority = 11, invocationCount = 1, enabled = false)
@@ -274,7 +293,7 @@ public class Agedcare extends createTask implements ITestListener {
 			String consoleError = extractConsoleError(result);
 			String des = loginTaskDescription;
 			String Data = "";
-			String faildes = loginTaskDescription + consoleError + Data;
+			String faildes = loginTaskDescription + consoleError + transferinTaskDescription;
 
 			createClickUpTask(methodName, faildes, listId, status);
 
@@ -293,7 +312,7 @@ public class Agedcare extends createTask implements ITestListener {
 			String consoleError = extractConsoleError(result);
 			String des = loginTaskDescription;
 			String Data = "";
-			String faildes = loginTaskDescription + consoleError + Data;
+			String faildes = loginTaskDescription + consoleError + Data + transferinTaskDescription;
 			createClickUpTask(methodName, faildes, listId, status);
 
 			String mainTaskId = getTaskId(formattedDateTime, listId);
