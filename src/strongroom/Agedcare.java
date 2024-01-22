@@ -51,12 +51,13 @@ public class Agedcare extends createTask implements ITestListener {
 	private SignPage signPage;
 	private Stocktakepages stocktakepages;
 	private static String formattedDateTime; // Class variable to store formatted date and time
+	private static String loginTaskDescription;
 
 	@BeforeClass
 	public void setUp() {
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		loginPage = new LoginPage(driver, wait);
 		secondPage = new SecondPage(driver, wait);
 		notificationPage = new NotificationPage(driver, wait);
@@ -74,10 +75,6 @@ public class Agedcare extends createTask implements ITestListener {
 		stocktakepages = new Stocktakepages(driver, wait);
 		formattedDateTime = getCurrentDateTime();
 
-	}
-
-	@Test(priority = 0)
-	public void Login() {
 		// Test Scenario
 		loginPage.openLoginPage();
 		LoginPage.login();
@@ -86,6 +83,18 @@ public class Agedcare extends createTask implements ITestListener {
 		secondPage.selectLocationFromDropdown();
 		secondPage.clickSecondPageButton();
 		notificationPage.clickNotificationIcon();
+
+		String loginPageURL = driver.getCurrentUrl();
+		String selectedLocation = secondPage.getSelectedLocation(); // Assuming you have a method to get selected
+																	// location
+		String enteredLocation = LoginPage.getEnteredLocation();
+		String enteredUsername = LoginPage.getEnteredUsername(); // Assuming you have a method to get entered username
+		String enteredPassword = LoginPage.getEnteredPassword(); // Assuming you have a method to get entered password
+
+		// Creating ClickUp task description for login
+		loginTaskDescription = "Login Page URL: " + loginPageURL + "\n" + "Entred Location: " + enteredLocation + "\n"
+				+ "Entered Username: " + enteredUsername + "\n" + "Entered Password: " + enteredPassword + "\n"
+				+ "Selected Location: " + selectedLocation;
 
 	}
 
@@ -102,6 +111,8 @@ public class Agedcare extends createTask implements ITestListener {
 		// signPage.performSignature("sam", "1111");
 
 		Thread.sleep(6000);
+
+		String inputdata = "";
 	}
 
 	@Test(priority = 8, invocationCount = 1, enabled = false)
@@ -154,7 +165,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 4, invocationCount = 1, enabled = true)
+	@Test(priority = 4, invocationCount = 1, enabled = false)
 	public void TransferoutPatient() throws InterruptedException {
 
 		transferoutPatientPage.transferout();
@@ -166,7 +177,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 3, invocationCount = 1, enabled = true)
+	@Test(priority = 3, invocationCount = 1, enabled = false)
 	public void TransferoutImprest() throws InterruptedException {
 
 		transferoutimprestPage.transferout();
@@ -178,7 +189,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(6000);
 	}
 
-	@Test(priority = 2, invocationCount = 1, enabled = true)
+	@Test(priority = 2, invocationCount = 1, enabled = false)
 	public void TransferinPatient() throws InterruptedException {
 
 		transferInPatientPage.transferIn();
@@ -220,6 +231,7 @@ public class Agedcare extends createTask implements ITestListener {
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
 	}
 
 	@Test(priority = 11, invocationCount = 1, enabled = false)
@@ -253,21 +265,25 @@ public class Agedcare extends createTask implements ITestListener {
 		// Use the stored formattedDateTime in the method
 
 		if (result.getStatus() == ITestResult.FAILURE) {
-			String taskDescription = "This added by automation script";
+			String taskDescription = loginTaskDescription;
 			String listId = "901600130678";
 			String status = "FAIL";
-
 			createClickUpTask(formattedDateTime, taskDescription, listId, status);
 
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
-			createClickUpTask(methodName, consoleError, listId, status);
+			String des = loginTaskDescription;
+			String Data = "";
+			String faildes = loginTaskDescription + consoleError + Data;
+
+			createClickUpTask(methodName, faildes, listId, status);
 
 			String mainTaskId = getTaskId(formattedDateTime, listId);
 			String subTaskId = getTaskId(methodName, listId);
 			updateTask(subTaskId, mainTaskId);
+
 		} else {
-			String taskDescription = "This added by automation script";
+			String taskDescription = loginTaskDescription;
 			String listId = "901600535467";
 			String status = "PASS";
 
@@ -275,7 +291,10 @@ public class Agedcare extends createTask implements ITestListener {
 
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
-			createClickUpTask(methodName, consoleError, listId, status);
+			String des = loginTaskDescription;
+			String Data = "";
+			String faildes = loginTaskDescription + consoleError + Data;
+			createClickUpTask(methodName, faildes, listId, status);
 
 			String mainTaskId = getTaskId(formattedDateTime, listId);
 			String subTaskId = getTaskId(methodName, listId);

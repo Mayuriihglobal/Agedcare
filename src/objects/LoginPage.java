@@ -34,6 +34,10 @@ public class LoginPage {
 	public static List<String> selectlocations;
 	public static List<String> loginUrls;
 
+	private static String enteredUsername; // Variable to store entered username
+	private static String enteredPassword; // Variable to store entered password
+	private static String enteredLocation;
+
 	public static void data() {
 
 		locations = readLocationFromExcel("Agedcare.xlsx");
@@ -66,6 +70,10 @@ public class LoginPage {
 
 		loginPage.enterLocation(location);
 		loginPage.enterCredentials(username, password);
+
+		// Store entered username and password
+		enteredUsername = username;
+		enteredPassword = password;
 	}
 
 	public void enterLocation(String location) {
@@ -76,6 +84,9 @@ public class LoginPage {
 		WebElement locationResultElement = wait.until(ExpectedConditions
 				.elementToBeClickable(By.xpath(LOCATION_RESULT_XPATH + "[text()='" + location + "']")));
 		locationResultElement.click();
+
+		// Set the entered location
+		enteredLocation = location;
 	}
 
 	public void enterCredentials(String username, String password) {
@@ -142,6 +153,20 @@ public class LoginPage {
 	public static List<String> SelectlocationFromExcell(String filePath) {
 		int SelectlocationCellIndex = 4; // Assuming selectlocation names are in the fifth column (index 4)
 		return readValuesFromExcel(filePath, filePath, SelectlocationCellIndex);
+	}
+
+	public static String getEnteredUsername() {
+		// TODO Auto-generated method stub
+		return enteredUsername;
+	}
+
+	public static String getEnteredPassword() {
+		// TODO Auto-generated method stub
+		return enteredPassword;
+	}
+
+	public static String getEnteredLocation() {
+		return enteredLocation;
 	}
 
 }

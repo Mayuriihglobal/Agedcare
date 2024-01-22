@@ -14,8 +14,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 public class createTask {
-	public void createClickUpTask(String taskName, String taskDescription, String listId, String status)
-			throws IOException {
+	public void createClickUpTask(String taskName, String taskDescription, String listId, String status) throws IOException {
 		HttpClient httpClient = HttpClientBuilder.create().build();
 
 		// Check if the task with the same name already exists
