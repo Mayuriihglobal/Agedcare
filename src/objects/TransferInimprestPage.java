@@ -42,6 +42,7 @@ public class TransferInimprestPage extends ExcelUtils {
 	private String transferInPageURL; // Class variable to store the Transfer In Page URL
 	private String selectedLocation; // Class variable to store the selected location
 	private String note; // Class variable to store the note
+	private String QtyFromExcel;
 
 	public TransferInimprestPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
@@ -148,6 +149,7 @@ public class TransferInimprestPage extends ExcelUtils {
 		enteredDrug = drugname1; // Store the entered drug
 		enteredQuantity = drugqty; // Store the entered quantity
 
+		QtyFromExcel = drugqty;
 		WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(ADD_LOCATOR));
 		addButton.click();
 
@@ -183,6 +185,27 @@ public class TransferInimprestPage extends ExcelUtils {
 
 	public String getNote() {
 		return note;
+	}
+
+	public String Getselectdestroyqty() {
+		// String QtyFromExcel
+		// =wait.until(ExpectedConditions.elementToBeClickable(QTY_LOCATOR)).getText();
+		return QtyFromExcel;
+	}
+
+	public String GetselectMedication() {
+		String selectedDrug = driver.findElement(By.xpath("//td[1]/p[1]")).getText();
+		return selectedDrug;
+	}
+
+	public int GetselectQty() throws InterruptedException {
+		String selectedQty = driver.findElement(By.xpath("//p[1]/span[1]")).getText().trim();
+		String add1 = selectedQty.replaceAll("\\(.*?\\)", "").trim();
+		System.out.println("select qty =  " + add1);
+		Thread.sleep(1000);
+		String numericAdd = add1.replaceAll("[^0-9]", "");
+		int abc = Integer.parseInt(numericAdd);
+		return abc;
 	}
 
 }

@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
@@ -52,7 +53,7 @@ public class Agedcare extends createTask implements ITestListener {
 	private Stocktakepages stocktakepages;
 	private static String formattedDateTime; // Class variable to store formatted date and time
 	private static String loginTaskDescription;
-	private static String transferinTaskDescription;
+	private static String inputdata;
 
 	@BeforeClass
 	public void setUp() {
@@ -93,7 +94,7 @@ public class Agedcare extends createTask implements ITestListener {
 		String enteredPassword = LoginPage.getEnteredPassword(); // Assuming you have a method to get entered password
 
 		// Creating ClickUp task description for login
-		loginTaskDescription = "Login Page URL: " + loginPageURL + "\n" + "Entred Location: " + enteredLocation + "\n"
+		loginTaskDescription = "Login Page URL: " + loginPageURL + "\n" + "Entered Location: " + enteredLocation + "\n"
 				+ "Entered Username: " + enteredUsername + "\n" + "Entered Password: " + enteredPassword + "\n"
 				+ "Selected Location: " + selectedLocation;
 
@@ -113,93 +114,362 @@ public class Agedcare extends createTask implements ITestListener {
 
 		Thread.sleep(6000);
 
-		String inputdata = "";
 	}
 
-	@Test(priority = 8, invocationCount = 1, enabled = false)
+	@Test(priority = 8, invocationCount = 1, enabled = true)
 	public void OutgoingPatient() throws InterruptedException {
+
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepage.Displayinstock();
+		stocktakepage.searching();
+		Thread.sleep(3000);
+
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		outgoingPatientPage.Outgoing();
 		outgoingPatientPage.writenote();
 		outgoingPatientPage.Resident();
+		String selectdestroyqty = outgoingPatientPage.Getselectdestroyqty();
+		String selectMedication = outgoingPatientPage.GetselectMedication();
+		int selectQty = outgoingPatientPage.GetselectQty();
 
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		stocktakepages.clickStock();
+		stocktakepages.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepages.Displayinstock();
+		stocktakepages.searching();
+		Thread.sleep(3000);
+
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue1 + selectQty;
+		System.out.print(ExpectedQty);
+
+		if (ExpectedQty == actualValue) {
+			inputdata = "OutGoing Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "OutGoing in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Pass";
+		} else {
+			inputdata = "OutGoing Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "OutGoing in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Fail";
+		}
 	}
 
-	@Test(priority = 7, invocationCount = 1, enabled = false)
+	@Test(priority = 7, invocationCount = 1, enabled = true)
 	public void Outgoingimprest() throws InterruptedException {
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepage.searching();
+		Thread.sleep(3000);
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		outgoingimprestPage.Outgoing();
 		outgoingimprestPage.writenote();
 		outgoingimprestPage.imprest();
+		String selectdestroyqty = outgoingimprestPage.Getselectdestroyqty();
+		String selectMedication = outgoingimprestPage.GetselectMedication();
+		int selectQty = outgoingimprestPage.GetselectQty();
 
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		// Loop through the test execution
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepages.searching();
+		Thread.sleep(3000);
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue1 + selectQty;
+		System.out.print(ExpectedQty);
+		if (ExpectedQty == actualValue) {
+			inputdata = "Outgoing Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Outgoing in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Outgoing Stock: " + actualValue1 + "\n" + "Result: " + "Pass";
+		} else {
+			inputdata = "Outgoing Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Outgoing in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Outgoing Stock: " + actualValue1 + "\n" + "Result: " + "Fail";
+		}
 	}
 
-	@Test(priority = 6, invocationCount = 1, enabled = false)
+	@Test(priority = 6, invocationCount = 1, enabled = true)
 	public void DestroyPatient() throws InterruptedException {
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepage.Displayinstock();
+		stocktakepage.searching();
+		Thread.sleep(3000);
+
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		destroyPatientPage.Destroy();
 		destroyPatientPage.writenote();
 		destroyPatientPage.MethodOFDestruction();
 		destroyPatientPage.CourierNameandNotes();
 		destroyPatientPage.Resident();
+		String selectdestroyqty = destroyPatientPage.Getselectdestroyqty();
+		String selectMedication = destroyPatientPage.GetselectMedication();
+		int selectQty = destroyPatientPage.GetselectQty();
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		stocktakepages.clickStock();
+		stocktakepages.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepages.Displayinstock();
+		stocktakepages.searching();
+		Thread.sleep(3000);
+
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue1 + selectQty;
+		System.out.print(ExpectedQty);
+
+		if (ExpectedQty == actualValue) {
+			inputdata = "Destory Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Destory in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Pass";
+		} else {
+			inputdata = "Destory Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Destory in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Fail";
+		}
+
 	}
 
-	@Test(priority = 5, invocationCount = 1, enabled = false)
+	@Test(priority = 5, invocationCount = 1, enabled = true)
 	public void Destroyimprest() throws InterruptedException {
+
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepage.searching();
+		Thread.sleep(3000);
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		destroyimprestPage.Destroy();
 		destroyimprestPage.writenote();
 		destroyimprestPage.MethodOFDestruction();
 		destroyimprestPage.CourierNameandNotes();
 		destroyimprestPage.imprest();
+		String selectdestroyqty = destroyimprestPage.Getselectdestroyqty();
+		String selectMedication = destroyimprestPage.GetselectMedication();
+		int selectQty = destroyimprestPage.GetselectQty();
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		// Loop through the test execution
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepages.searching();
+		Thread.sleep(3000);
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue1 + selectQty;
+		System.out.print(ExpectedQty);
+		if (ExpectedQty == actualValue) {
+			inputdata = "Destory Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Destory in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Pass";
+		} else {
+			inputdata = "Destory Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Destory in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Fail";
+		}
 	}
 
-	@Test(priority = 4, invocationCount = 1, enabled = false)
+	@Test(priority = 4, invocationCount = 1, enabled = true)
 	public void TransferoutPatient() throws InterruptedException {
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepage.Displayinstock();
+		stocktakepage.searching();
+		Thread.sleep(3000);
+
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		transferoutPatientPage.transferout();
 		transferoutPatientPage.enterLocation();
 		transferoutPatientPage.writenote();
 		transferoutPatientPage.Resident();
+		String selectdestroyqty = transferoutPatientPage.Getselectdestroyqty();
+		String selectMedication = transferoutPatientPage.GetselectMedication();
+		String selectresident = transferoutPatientPage.Getselectresident();
+		int selectQty = transferoutPatientPage.GetselectQty();
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		stocktakepages.clickStock();
+		stocktakepages.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepages.Displayinstock();
+		stocktakepages.searching();
+		Thread.sleep(3000);
+
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue1 + selectQty;
+		System.out.print(ExpectedQty);
+
+		if (ExpectedQty == actualValue) {
+			inputdata = "\n" + "Transfer-out Patient Quantity From Excel: " + selectdestroyqty + "\n"
+					+ "Transfer-out Drug Name: " + selectMedication + "\n" + "Transfer-out Patient Drug Quantity:  "
+					+ selectQty + "\n" + "Current Drug Stock: " + actualValue + "\n" + "Slected Patient :"
+					+ selectresident + "\n" + "After Transferout Patient Drug Stock: " + actualValue1 + "\n"
+					+ "Result: " + "Pass";
+		} else {
+			inputdata = "\n" + "Transferout Patient Quantity From Excel : " + selectdestroyqty + "\n"
+					+ "Transfer-out Drug Name: " + selectMedication + "\n" + "Transferout Patient Drug quantity:  "
+					+ selectQty + "\n" + "Current Drug Stock: " + actualValue + "\n" + "Selected Patient :"
+					+ selectresident + "\n" + "After Transferout Patient Drug Stock: " + actualValue1 + "\n"
+					+ "Result: " + "fail";
+		}
 	}
 
-	@Test(priority = 3, invocationCount = 1, enabled = false)
+	@Test(priority = 3, invocationCount = 1, enabled = true)
 	public void TransferoutImprest() throws InterruptedException {
+
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepage.searching();
+		Thread.sleep(3000);
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		transferoutimprestPage.transferout();
 		transferoutimprestPage.enterLocation();
 		transferoutimprestPage.writenote();
 		transferoutimprestPage.imprest();
+		String selectdestroyqty = transferoutimprestPage.Getselectdestroyqty();
+		String selectMedication = transferoutimprestPage.GetselectMedication();
+		int selectQty = transferoutimprestPage.GetselectQty();
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		// Loop through the test execution
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepages.searching();
+		Thread.sleep(3000);
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue1 + selectQty;
+		System.out.print(ExpectedQty);
+		if (ExpectedQty == actualValue) {
+			inputdata = "Transferout Imprest Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: "
+					+ selectMedication + "\n" + "Transferout Imprest quantity:  " + selectQty + "\n" + "Current Stock: "
+					+ actualValue + "\n" + "After Transferout Imprest Stock: " + actualValue1 + "\n" + "Result: "
+					+ "Pass";
+		} else {
+			inputdata = "Transferout Imprest Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: "
+					+ selectMedication + "\n" + "Transferout Imprest quantity:  " + selectQty + "\n" + "Current Stock: "
+					+ actualValue + "\n" + "After Transferout Imprest Stock: " + actualValue1 + "\n" + "Result: "
+					+ "Fail";
+		}
 	}
 
-	@Test(priority = 2, invocationCount = 1, enabled = false)
+	@Test(priority = 2, invocationCount = 1, enabled = true)
 	public void TransferinPatient() throws InterruptedException {
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepage.Displayinstock();
+		stocktakepage.searching();
+		Thread.sleep(3000);
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
 
 		transferInPatientPage.transferIn();
 		transferInPatientPage.enterLocation();
 		transferInPatientPage.writenote();
 		transferInPatientPage.Resident();
+		String selectdestroyqty = transferInPatientPage.Getselectdestroyqty();
+		String selectMedication = transferInPatientPage.GetselectMedication();
+		int selectQty = transferInPatientPage.GetselectQty();
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
+
+		// Loop through the test execution
+		stocktakepages.clickStock();
+		stocktakepages.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.enterresidentname(0);
+		Thread.sleep(3000);
+		stocktakepages.Displayinstock();
+		stocktakepages.searching();
+		Thread.sleep(3000);
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
+
+		int ExpectedQty = actualValue + selectQty;
+		System.out.print(ExpectedQty);
+		if (ExpectedQty == actualValue1) {
+			inputdata = "Destory Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Destory in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Pass";
+		} else {
+			inputdata = "Destory Quantity From Excel : " + selectdestroyqty + "\n" + "Drug Name: " + selectMedication
+					+ "\n" + "Destory in quantity:  " + selectQty + "\n" + "Current Stock: " + actualValue + "\n"
+					+ "After Destory Stock: " + actualValue1 + "\n" + "Result: " + "Fail";
+		}
 	}
 
 	@Test(priority = 10, invocationCount = 1, enabled = false)
@@ -225,31 +495,52 @@ public class Agedcare extends createTask implements ITestListener {
 	@Test(priority = 1, invocationCount = 1, enabled = true)
 	public void TransferinImprest() throws InterruptedException {
 
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepage.enterMedication(0);
+		stocktakepage.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepage.searching();
+		Thread.sleep(3000);
+		int actualValue = stocktakepage.getExpectedValue();
+		System.out.println("(Stock): " + actualValue);
+
 		transferInPage.transferIn();
 		transferInPage.enterLocation();
 		transferInPage.writenote();
 		transferInPage.imprest();
+		String selectdestroyqty = transferInPage.Getselectdestroyqty();
+		String selectMedication = transferInPage.GetselectMedication();
+		int selectQty = transferInPage.GetselectQty();
+		String enteredLocation = transferInPage.getEnteredLocation();
 		Thread.sleep(3000);
 		signPage.performSignature();
 		Thread.sleep(6000);
 
-		// Additional information for ClickUp task description
-		String transferInPageURL = driver.getCurrentUrl();
-		String selectedLocation = transferInPage.getSelectedLocation(); // Assuming you have a method to get selected
-																		// location
-		String enteredLocation = transferInPage.getEnteredLocation(); // Assuming you have a method to get entered
-																		// location
-		String note = transferInPage.getNote(); // Assuming you have a method to get the note
+		// Loop through the test execution
+		stocktakepage.clickStock();
+		stocktakepage.clickStockTake();
+		stocktakepages.enterMedication(0);
+		stocktakepages.Displayimprest();
+		Thread.sleep(3000);
+		stocktakepages.searching();
+		Thread.sleep(3000);
+		int actualValue1 = stocktakepages.getExpectedValue();
+		System.out.println("(Stock): " + actualValue1);
 
-		// Creating ClickUp task description for Transferin
-		transferinTaskDescription = "Transferin Page URL: " + transferInPageURL + "\n" + "Selected Location: "
-				+ selectedLocation + "\n" + "Entered Location: " + enteredLocation + "\n" + "Note: " + note;
-
-		// Use the transferinTaskDescription as needed in your further logic
-		// For example, you can pass it to createClickUpTask method
-
-		// createClickUpTask(formattedDateTime, transferinTaskDescription, listId,
-		// status, additionalInfo);
+		int ExpectedQty = actualValue + selectQty;
+		System.out.print(ExpectedQty);
+		if (ExpectedQty == actualValue1) {
+			inputdata = "\n" + "Transfer In Imprest Location: " + enteredLocation + "\n"
+					+ "Transferin Imprest Drug Name: " + selectMedication + "\n" + "Transferin Imprest in quantity:  "
+					+ selectdestroyqty + "\n" + "Current Stock: " + actualValue + "\n" + "Final Stock: " + actualValue1
+					+ "\n" + "Result: " + "Pass";
+		} else {
+			inputdata = "\n" + "Transfer In Imprest Location: " + enteredLocation + "\n"
+					+ "Transferin Imprest Drug Name: " + selectMedication + "\n" + "Transferin Imprest in quantity:  "
+					+ selectdestroyqty + "\n" + "Current Stock: " + actualValue + "\n" + "Final Stock: " + actualValue1
+					+ "\n" + "Result: " + "Fail";
+		}
 
 	}
 
@@ -291,9 +582,7 @@ public class Agedcare extends createTask implements ITestListener {
 
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
-			String des = loginTaskDescription;
-			String Data = "";
-			String faildes = loginTaskDescription + consoleError + transferinTaskDescription;
+			String faildes = loginTaskDescription + "\n" + inputdata + consoleError;
 
 			createClickUpTask(methodName, faildes, listId, status);
 
@@ -310,9 +599,7 @@ public class Agedcare extends createTask implements ITestListener {
 
 			String methodName = result.getMethod().getMethodName();
 			String consoleError = extractConsoleError(result);
-			String des = loginTaskDescription;
-			String Data = "";
-			String faildes = loginTaskDescription + consoleError + Data + transferinTaskDescription;
+			String faildes = loginTaskDescription + "\n" + inputdata + consoleError;
 			createClickUpTask(methodName, faildes, listId, status);
 
 			String mainTaskId = getTaskId(formattedDateTime, listId);

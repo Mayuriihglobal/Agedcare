@@ -15,6 +15,7 @@ public class Stocktakepages extends ExcelUtils {
 	private static final String STOCK_XPATH = "//p[normalize-space()='Stock']";
 	private static final String STOCK_TAKE_XPATH = "//p[normalize-space()='Stock Take']";
 	private static final String MEDICATION_XPATH = "//input[@placeholder='Medication...']";
+	private static final String RESIDENT_XPATH = "//input[@placeholder='Resident...']";
 	private static final String EXPECTED_VALUE_XPATH = "(//td)[4]";
 	private static final String DISPLAYIN_STOCK_XPATH = "//p[@class='active-select-filter select-filter-item']";
 	private static final String SEARCHING_XPATH = "//button[@class='button submit-button']";
@@ -59,8 +60,8 @@ public class Stocktakepages extends ExcelUtils {
 
 	public void enterMedication(int drugIndex) {
 		// Read drug names from the Excel file
-		List<String> drugNames = readDrugNamesFromExcel("Agedcare.xlsx");
-
+		List<String> drugNames = readDrugNamesFromExcel("Agedcare.xlsx");;
+		
 		// Get the drug name based on the provided index
 		String drugName = drugNames.get(drugIndex % drugNames.size());
 
@@ -68,6 +69,16 @@ public class Stocktakepages extends ExcelUtils {
 		WebElement medication = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(MEDICATION_XPATH)));
 		medication.clear(); // Clear the field before entering a new drug name
 		medication.sendKeys(drugName);
+		
+	}
+	
+public void enterresidentname(int resident) {
+		
+		List<String> Resident = readResidentFromExcel("Agedcare.xlsx");
+		String Resident1 = Resident.get(resident % Resident.size());
+		WebElement residnet = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(RESIDENT_XPATH)));
+		residnet.clear(); // Clear the field before entering a new drug name
+		residnet.sendKeys(Resident1);
 	}
 
 	public int getExpectedValue() throws InterruptedException {
